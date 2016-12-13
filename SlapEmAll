@@ -1,0 +1,67 @@
+import scala.swing._
+import javax.swing.UIManager
+import javax.swing.ImageIcon
+import javax.imageio.ImageIO
+import java.awt.Color
+import java.awt.image.BufferedImage
+import java.io.File
+import javax.swing.event._
+import processing.core._
+
+object SlapEmAll extends PApplet {
+  
+  val squares = 9
+  val squareSize = 100
+  val gridSize = squares * squareSize
+  val middle = squares / 2
+  var view: Array[Array[String]] = Array.fill(squares, squares)("w")
+  
+  val mPic = loadImage("mermaidPic_burned.png")
+  val pPic = loadImage("piraatti.png")
+  val dPic = loadImage("dockPicture.png")
+  val sPic = loadImage("seaPicture.png")
+  
+  var gameOver = false
+  
+  override def setup() : Unit = {
+    size(gridSize, gridSize)
+    
+  }
+  
+  override def draw() : Unit = {
+    //TODO: sitten kun fontti tarvitaan, tässä on kehys: val font = createFont("Arial Black", 50, true)  // The font to be used in the end /
+    
+    //Draws the gameboard with dock and water. Adds the mermaid (player), too.
+    for (i <- 0 until squares) {
+      for (j <- 0 until squares) {
+        if (i == middle || j == middle) {
+          image(dPic, i * squareSize, j * squareSize)
+        }
+      }
+    }
+    image(sPic, 0, 0)
+    image(sPic, (middle + 1) * squareSize, 0)
+    image(sPic, 0, (middle + 1) * squareSize)
+    image(sPic, (middle + 1) * squareSize, (middle + 1) * squareSize)
+    image(mPic, middle * squareSize, middle * squareSize)
+    
+    if (gameOver) {
+      //TODO: lisätään tekstit sun muut mitä tapahtuukaan kun peli loppuu!
+      noLoop
+    }
+    
+  }
+  
+  def main(args: Array[String]) {
+    val frame = new javax.swing.JFrame("Slap 'em All!")
+
+    frame.getContentPane().add(this)
+    init
+    frame.setSize(this.gridSize, this.gridSize)
+    frame.pack
+    frame.setVisible(true)
+    frame.setLocationRelativeTo(null)
+    frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE)
+  }
+  
+}
