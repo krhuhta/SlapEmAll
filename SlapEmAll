@@ -10,11 +10,12 @@ import processing.core._
 
 object SlapEmAll extends PApplet {
   
+  val gameWorld = new World
   val squares = 9
   val squareSize = 100
   val gridSize = squares * squareSize
   val middle = squares / 2
-  var view: Array[Array[String]] = Array.fill(squares, squares)("w")
+  var frameN = 0                       //counter
   
   val mPic = loadImage("mermaidPic_burned.png")
   val pPic = loadImage("piraatti.png")
@@ -25,6 +26,7 @@ object SlapEmAll extends PApplet {
   
   override def setup() : Unit = {
     size(gridSize, gridSize)
+    frameRate(60)
     
   }
   
@@ -32,10 +34,17 @@ object SlapEmAll extends PApplet {
     //TODO: sitten kun fontti tarvitaan, tässä on kehys: val font = createFont("Arial Black", 50, true)  // The font to be used in the end /
     
     //Draws the gameboard with dock and water. Adds the mermaid (player), too.
+    frameN += 1
+    if(frameN % 60 == 0) {
+      gameWorld.advanceEnemies()
+    }
     for (i <- 0 until squares) {
       for (j <- 0 until squares) {
         if (i == middle || j == middle) {
           image(dPic, i * squareSize, j * squareSize)
+          if (gameWorld.enemies(i)(j).isDefined) {
+            image(pPic, i * squareSize, j * squareSize)
+          }
         }
       }
     }
@@ -44,7 +53,7 @@ object SlapEmAll extends PApplet {
     image(sPic, 0, (middle + 1) * squareSize)
     image(sPic, (middle + 1) * squareSize, (middle + 1) * squareSize)
     image(mPic, middle * squareSize, middle * squareSize)
-    
+    //TODO: lisätään vihollisten piirtäminen oikeisiin kohtiin!
     if (gameOver) {
       //TODO: lisätään tekstit sun muut mitä tapahtuukaan kun peli loppuu!
       noLoop
