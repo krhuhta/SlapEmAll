@@ -3,7 +3,7 @@ class World {
   import scala.util.Random.shuffle
   
   private val directions = Vector(0,1,2,3)                                          //North, East, South, West)
-  private val lineLength = 5                                                        //Number of steps for an enemy to take
+  private val lineLength = 4                                                        //Number of steps for an enemy to take
   private val lineOfEnemies: Array[Option[Enemy]] = Array.fill(lineLength + 1)(None)//single line of enemies. Index 0 is on top of player (player dies is here), 1 is next to player and lineLenght is the furtherst away. 
   val enemies: Array[Array[Option[Enemy]]] = Array.fill(4)(lineOfEnemies)           //4 lines of enemies. Index 0 is north, 1 is east, 2 is south and 3 is west
     
