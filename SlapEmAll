@@ -21,7 +21,7 @@ object SlapEmAll extends PApplet {
   val middle = squares / 2
 
   val mPic = loadImage("mermaidPic_burned.png")
-  val pPic = loadImage("piraatti.png")
+  val pPic = loadImage("piraattiPicture_burned.png")
   val dPic = loadImage("dockPicture.png")
   val sPic = loadImage("seaPicture.png")
   
