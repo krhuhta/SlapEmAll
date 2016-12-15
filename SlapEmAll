@@ -7,22 +7,23 @@ import java.awt.image.BufferedImage
 import java.io.File
 import javax.swing.event._
 import processing.core._
+import com.sun.org.apache.xalan.internal.xsltc.dom.KeyIndex
 
 object SlapEmAll extends PApplet {
   
-  val gameWorld = new World
-  val squares = 9
   val squareSize = 100
+  val gameWorld = new World
+  val player = new Player(gameWorld)
+  private var speed = 30
+  
+  val squares = gameWorld.BoardSize
   val gridSize = squares * squareSize
   val middle = squares / 2
-  private var speed = 60
-  
+
   val mPic = loadImage("mermaidPic_burned.png")
   val pPic = loadImage("piraatti.png")
   val dPic = loadImage("dockPicture.png")
   val sPic = loadImage("seaPicture.png")
-  
-  var gameOver = false
   
   override def setup() : Unit = {
     size(gridSize, gridSize)
@@ -34,8 +35,9 @@ object SlapEmAll extends PApplet {
     //TODO: sitten kun fontti tarvitaan, tässä on kehys: val font = createFont("Arial Black", 50, true)  // The font to be used in the end /
     
     //Draws the gameboard with dock and water. Adds the mermaid (player), too.
-    if(frameCount % speed == 0) {
-      gameWorld.advanceEnemies()
+    if(frameCount % speed == 0) {     // advances the game according the the frames
+      gameWorld.advanceGame()
+      println(".")
     }
     for (i <- 0 until squares) {
       for (j <- 0 until squares) {
@@ -52,14 +54,27 @@ object SlapEmAll extends PApplet {
     image(sPic, 0, (middle + 1) * squareSize)
     image(sPic, (middle + 1) * squareSize, (middle + 1) * squareSize)
     image(mPic, middle * squareSize, middle * squareSize)
-    //TODO: lisätään vihollisten piirtäminen oikeisiin kohtiin!
-    if (gameOver) {
-      //TODO: lisätään tekstit sun muut mitä tapahtuukaan kun peli loppuu!
+    if (gameWorld.hasLost) {
+      println("You Lost")
       noLoop
     }
     
   }
-  
+  override def keyPressed() : Unit = {
+    val e = keyCode
+      e match {
+      //wasd
+        case 87 => { player.hit(0);println("up")}
+        case 68 => { player.hit(1);println("right")}
+        case 83 => { player.hit(2);println("down")}
+        case 65 => { player.hit(3);println("left")}
+      //arrow keys
+        case 38 => { player.hit(0);println("up")}
+        case 39 => { player.hit(1);println("right")}
+        case 40 => { player.hit(2);println("down")}
+        case 37 => { player.hit(3);println("left")}
+    }
+  }
   def main(args: Array[String]) {
     val frame = new javax.swing.JFrame("Slap 'em All!")
     
