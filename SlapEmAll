@@ -15,7 +15,7 @@ object SlapEmAll extends PApplet {
   val squareSize = 100
   val gridSize = squares * squareSize
   val middle = squares / 2
-  var frameN = 0                       //counter
+  private var speed = 60
   
   val mPic = loadImage("mermaidPic_burned.png")
   val pPic = loadImage("piraatti.png")
@@ -34,8 +34,7 @@ object SlapEmAll extends PApplet {
     //TODO: sitten kun fontti tarvitaan, tässä on kehys: val font = createFont("Arial Black", 50, true)  // The font to be used in the end /
     
     //Draws the gameboard with dock and water. Adds the mermaid (player), too.
-    frameN += 1
-    if(frameN % 60 == 0) {
+    if(frameCount % speed == 0) {
       gameWorld.advanceEnemies()
     }
     for (i <- 0 until squares) {
@@ -63,7 +62,7 @@ object SlapEmAll extends PApplet {
   
   def main(args: Array[String]) {
     val frame = new javax.swing.JFrame("Slap 'em All!")
-
+    
     frame.getContentPane().add(this)
     init
     frame.setSize(this.gridSize, this.gridSize)
