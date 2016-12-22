@@ -15,6 +15,8 @@ class World {
   def lose() = gameOver = true
   def hasLost = gameOver
   private var time = 0
+  private var points = 0
+  def pointCount = points
   
 //   def newEnemy() = {
 //     enemies(shuffle(directions).head)(lineLength) = Option(new Enemy)    //Creates a new enemy to a random line's last index
@@ -68,7 +70,7 @@ class World {
     newEnemy()
     // if (!enemies.forall(_.head.isEmpty)) lose()
     if (enemies(lineLength)(lineLength).isDefined) lose() //Checks if an enemy is on top of the player (and loses the game if true)
-    // turnCounter += 1     Score/time Counter
+    points += 10    
     // ??? graphics
   }
   
@@ -78,7 +80,7 @@ class World {
     if (time > 10 && time % 10 == 0) newEnemy()
     // if (!enemies.forall(_.head.isEmpty)) lose()
     if (enemies(lineLength)(lineLength).isDefined) lose() //Checks if an enemy is on top of the player (and loses the game if true)
-    // turnCounter += 1     Score/time Counter
+    points += 12
     // ??? graphics
     time += 1
   }
