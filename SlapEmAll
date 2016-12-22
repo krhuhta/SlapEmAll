@@ -32,7 +32,7 @@ object SlapEmAll extends PApplet {
   
   override def setup() : Unit = {
     size(gridSize, gridSize)
-    frameRate(40)
+    frameRate(60)
     
   }
   
@@ -73,7 +73,7 @@ object SlapEmAll extends PApplet {
       image(sPic, (middle + 1) * squareSize, (middle + 1) * squareSize)
       image(mPic, middle * squareSize, middle * squareSize)
       if (frameCount % 60 == 0) {
-        frameRate += 20  
+        frameRate(frameRate + 5) 
       }
       if (gameWorld.hasLost) {
         println("You Lost")
