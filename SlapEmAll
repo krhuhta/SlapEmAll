@@ -101,7 +101,7 @@ object SlapEmAll extends PApplet {
         //TODO: lisätään mute-ominaisuus m-kirjaimelle
         //restarts the game when SPACE is pressed  
           case 32 => {
-            if (!gameWorld.hasLost){
+            if (gameWorld.hasLost){
               stage = 0 
               loop()
               gameWorld.boot()
