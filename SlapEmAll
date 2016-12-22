@@ -15,7 +15,7 @@ object SlapEmAll extends PApplet {
   val gameWorld = new World
   val player = new Player(gameWorld)
   private var speed = 30
-  private var stage = 1
+  private var stage = 0
   
   val squares = gameWorld.BoardSize
   val gridSize = squares * squareSize
@@ -39,7 +39,7 @@ object SlapEmAll extends PApplet {
   override def draw() : Unit = {
     val font = createFont("Arial Black", 100, true)
     //TODO: sitten kun fontti tarvitaan, tässä on kehys: val font = createFont("Arial Black", 50, true)  // The font to be used in the end /
-    if (stage == 1) {
+    if (stage == 0) {
       image(startPic, 0, 0, gridSize, gridSize)
       textFont(font, 30)
       fill(255, 255, 255)
@@ -47,15 +47,22 @@ object SlapEmAll extends PApplet {
       textFont(font, 25)
       fill(240, 240, 240)
       text("PRESS THE ARROW KEYS to slap them if they get too close!", 50, 250, 380, 500)
-      textFont(font, 35)
+      textFont(font, 30)
       fill(0, 0, 0)
-      text("Press SPACE to start", 50, 400, 350, 500)
+      text("Press 1 for level 1, or 2 for level 2", 50, 400, 330, 500)
     }
-    if (stage == 2) {
+    if (stage == 1 || stage == 2) {
       //Draws the gameboard with dock and water. Adds the mermaid (player), too. Goes through the enemies and draws them.
-      if(frameCount % speed == 0) {     // advances the game according the the frames
-        gameWorld.advanceGame()
-        println(".")
+      if (stage == 1) {
+        if(frameCount % speed == 0) {     // advances the game according the the frames
+          gameWorld.advanceGame()
+          println(".")
+        }
+      } else {
+        if(frameCount % speed == 0) {     // advances the game according the the frames
+          gameWorld.advanceGameDoubles()
+          println(".")
+        }
       }
       for (i <- 0 until squares) {
         for (j <- 0 until squares) {
@@ -72,9 +79,10 @@ object SlapEmAll extends PApplet {
       image(sPic, 0, (middle + 1) * squareSize)
       image(sPic, (middle + 1) * squareSize, (middle + 1) * squareSize)
       image(mPic, middle * squareSize, middle * squareSize)
-      if (frameCount % 60 == 0) {
-        frameRate(frameRate + 5) 
-      }
+      // speeds up the game
+      if (frameCount % 250 == 0) {
+        frameRate(frameRate + 5)  
+      } 
       if (gameWorld.hasLost) {
         println("You Lost")
         
@@ -88,7 +96,8 @@ object SlapEmAll extends PApplet {
         e match {
         //TODO: lisätään mute-ominaisuus m-kirjaimelle
         //the game starts when SPACE is pressed
-          case 32 => { stage = 2 } 
+          case 49 => { stage = 1 } 
+          case 50 => { stage = 2 }
         //wasd
           case 87 => { player.hit(0);println("up")}
           case 68 => { player.hit(1);println("right")}
