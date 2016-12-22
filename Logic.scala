@@ -9,14 +9,22 @@ class World {
 //  val enemies: Array[Array[Option[Enemy]]] = Array.fill(4)(lineOfEnemies)  //4 lines of enemies. Index 0 is north, 1 is east, 2 is south and 3 is west
   
   //def tableOfEnemies = enemies.map(_.map(_.))
-  val enemies: Array[Array[Option[Enemy]]] = Array.fill(BoardSize, BoardSize)(None)
+  var enemies: Array[Array[Option[Enemy]]] = Array.fill(BoardSize, BoardSize)(None)
   
   private var gameOver = false
   def lose() = gameOver = true
+  def unLose() = gameOver = false
   def hasLost = gameOver
+
   private var time = 0
   private var points = 0
   def pointCount = points
+  
+  def boot() = {
+    points = 0
+    enemies = Array.fill(BoardSize, BoardSize)(None)
+    unLose()
+  }
   
 //   def newEnemy() = {
 //     enemies(shuffle(directions).head)(lineLength) = Option(new Enemy)    //Creates a new enemy to a random line's last index
@@ -89,7 +97,7 @@ class World {
 
 
 class Enemy {                  //Class for the Enemies, currently does nothing more than exits. Made to ease futher development.
-  
+  def clear = false
 }
   
 class Player(world: World) {                 //The player
