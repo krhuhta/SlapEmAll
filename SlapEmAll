@@ -79,13 +79,14 @@ object SlapEmAll extends PApplet {
       image(sPic, 0, (middle + 1) * squareSize)
       image(sPic, (middle + 1) * squareSize, (middle + 1) * squareSize)
       image(mPic, middle * squareSize, middle * squareSize)
+      fill(255, 255, 255)
+      text(s"${gameWorld.pointCount}", 200, 600, 330, 500)
       // speeds up the game
       if (frameCount % 250 == 0) {
         frameRate(frameRate + 5)  
       } 
       if (gameWorld.hasLost) {
         println("You Lost")
-        
         noLoop
       }
     }
@@ -95,9 +96,7 @@ object SlapEmAll extends PApplet {
    
         e match {
         //TODO: lisätään mute-ominaisuus m-kirjaimelle
-        //restarts the game when SPACE is pressed  
-          case 32 => { stage = 0 ; loop()}
-        //the game starts when 1 or 2 is pressed
+        //the game starts when SPACE is pressed
           case 49 => { stage = 1 } 
           case 50 => { stage = 2 }
         //wasd
