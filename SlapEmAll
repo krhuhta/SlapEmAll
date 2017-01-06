@@ -137,6 +137,7 @@ object SlapEmAll extends PApplet {
     frame.setVisible(true)
     frame.setLocationRelativeTo(null)
     frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE)
+    SoundPlayer.playSound()
   }
   
 }
