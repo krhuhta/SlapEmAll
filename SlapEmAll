@@ -124,6 +124,7 @@ object SlapEmAll extends PApplet {
           case 40 => { player.hit(2);println("down")}
           case 37 => { player.hit(3);println("left")
                        image(mAttackLeft, middle * squareSize, middle * squareSize) }
+          case _ => Unit
       }
     
   }
