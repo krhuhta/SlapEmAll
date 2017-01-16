@@ -129,13 +129,20 @@ object SlapEmAll extends PApplet {
         e match {
         //Mutes the game when M is pressed 
         case 77 => {
-        if(!muted){
-          muted = true
+        if(!pirateMuted){
+          pirateMuted = true
           pirateControl.setValue(true)
+        }else{
+          pirateMuted = false
+          pirateControl.setValue(false)
+        }
+      }
+        case 78 => {
+        if(!slapMuted){
+          slapMuted = true
           slapControl.setValue(true)
         }else{
-          muted = false
-          pirateControl.setValue(false)
+          slapMuted = false
           slapControl.setValue(false)
         }
       }
@@ -190,7 +197,7 @@ object SlapEmAll extends PApplet {
   
   //Sounds of the game  
     // Background sound
-    private var muted = false
+    private var pirateMuted = false
     private val pirateFile = new File("pirate.wav")
     private val pirateIn = AudioSystem.getAudioInputStream(pirateFile)
     private var pirate = AudioSystem.getClip()
@@ -203,6 +210,7 @@ object SlapEmAll extends PApplet {
     }
     
     //Soundeffects
+    private var slapMuted = false
     private val slapFile = new File("slap.wav")
     private val slapIn = AudioSystem.getAudioInputStream(slapFile)
     private var slap = AudioSystem.getClip()
