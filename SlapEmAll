@@ -59,6 +59,8 @@ object SlapEmAll extends PApplet {
       } 
       if (gameWorld.hasLost) {
       drawEnd
+      pirate.stop()
+      pirate.setFramePosition(0)
       noLoop
       }
     }
@@ -129,11 +131,11 @@ object SlapEmAll extends PApplet {
         e match {
         //Mutes the game when M is pressed 
         case 77 => {
-        if(!pirateMuted){
-          pirateMuted = true
+        if(!muted){
+          muted = true
           pirateControl.setValue(true)
         }else{
-          pirateMuted = false
+          muted = false
           pirateControl.setValue(false)
         }
       }
@@ -157,8 +159,8 @@ object SlapEmAll extends PApplet {
             }
           }
         //the game starts when 1 or 2 is pressed
-          case 49 => { stage = 1 } 
-          case 50 => { stage = 2 }
+          case 49 => { stage = 1; soundPlayer() } 
+          case 50 => { stage = 2; soundPlayer() }
         //arrow keys
           case 38 => { 
             if(player.timeFromLastHit < 0) {
@@ -197,12 +199,12 @@ object SlapEmAll extends PApplet {
   
   //Sounds of the game  
     // Background sound
-    private var pirateMuted = false
+    private var muted = false
     private val pirateFile = new File("pirate.wav")
     private val pirateIn = AudioSystem.getAudioInputStream(pirateFile)
     private var pirate = AudioSystem.getClip()
     pirate.open(pirateIn)
-    Thread.sleep(12000)
+    //Thread.sleep(12000)
     
     // Plays background sound
     private def soundPlayer() = {
@@ -237,7 +239,6 @@ object SlapEmAll extends PApplet {
     frame.setVisible(true)
     frame.setLocationRelativeTo(null)
     frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE)
-    soundPlayer()
   }
   
 }
