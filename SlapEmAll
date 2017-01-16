@@ -52,6 +52,7 @@ object SlapEmAll extends PApplet {
       }
       drawBoard
       // speeds up the game
+      player.timeFromLastHit -= 1
       if (frameCount % 250 == 0) {
         frameRate(frameRate + 5)  
       } 
@@ -91,7 +92,25 @@ object SlapEmAll extends PApplet {
       image(sPic, (middle + 1) * squareSize, 0)
       image(sPic, 0, (middle + 1) * squareSize)
       image(sPic, (middle + 1) * squareSize, (middle + 1) * squareSize)
-      image(mPic, middle * squareSize, middle * squareSize)
+      if (player.timeFromLastHit > 0) {
+        player.dirOfLastHit match {
+          case 0 => { 
+            image(mAttackUp, middle * squareSize, middle * squareSize)
+          }
+          case 1 => { 
+            image(mAttackRight, middle * squareSize, middle * squareSize)
+          }
+          case 2 => { 
+            image(mPic, middle * squareSize, middle * squareSize)
+          }
+          case 3 => { 
+            image(mAttackLeft, middle * squareSize, middle * squareSize)
+          }
+          case _ => {
+            image(mPic, middle * squareSize, middle * squareSize)
+          }
+        }
+      } else image(mPic, middle * squareSize, middle * squareSize)
       if (!gameWorld.hasLost) {
         fill(255, 255, 255)
         text(s"${gameWorld.pointCount}", 200, 600, 330, 500)
@@ -121,25 +140,36 @@ object SlapEmAll extends PApplet {
         //the game starts when 1 or 2 is pressed
           case 49 => { stage = 1 } 
           case 50 => { stage = 2 }
-        //wasd
-          case 87 => { player.hit(0)
-                       image(mAttackUp, middle * squareSize, middle * squareSize)}
-          case 68 => { player.hit(1)
-                       image(mAttackRight, middle * squareSize, middle * squareSize)}
-          case 83 => { player.hit(2)}
-          case 65 => { player.hit(3)
-                       image(mAttackLeft, middle * squareSize, middle * squareSize)}
         //arrow keys
-          case 38 => { player.hit(0)
-                       image(mAttackUp, middle * squareSize, middle * squareSize) }
-          case 39 => { player.hit(1)
-                       image(mAttackRight, middle * squareSize, middle * squareSize) }
-          case 40 => { player.hit(2)}
-          case 37 => { player.hit(3)
-                       image(mAttackLeft, middle * squareSize, middle * squareSize) }
+          case 38 => { 
+            if(player.timeFromLastHit < 0) {
+              player.hit(0);println("up")
+              image(mAttackUp, middle * squareSize, middle * squareSize)
+              player.timeFromLastHit = 15
+            }
+          }
+          case 39 => {
+            if(player.timeFromLastHit < 0) {
+              player.hit(1);println("right")
+              image(mAttackRight, middle * squareSize, middle * squareSize) 
+              player.timeFromLastHit = 15
+            }
+          }
+          case 40 => {
+            if(player.timeFromLastHit < 0) {
+              player.hit(2)
+              player.timeFromLastHit = 15
+              }
+            }
+          case 37 => {
+            if(player.timeFromLastHit < 0) {
+              player.hit(3);println("left")
+              image(mAttackLeft, middle * squareSize, middle * squareSize)
+              player.timeFromLastHit = 15
+            }
+          }
           case _ => None
-      }
-    
+    }
   }
   def main(args: Array[String]) {
     val frame = new javax.swing.JFrame("Slap 'em All!")
@@ -151,7 +181,7 @@ object SlapEmAll extends PApplet {
     frame.setVisible(true)
     frame.setLocationRelativeTo(null)
     frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE)
-    SoundPlayer.playSound()
+ //   SoundPlayer.playSound()
   }
   
 }
