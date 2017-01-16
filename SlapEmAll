@@ -8,6 +8,7 @@ import java.io.File
 import javax.swing.event._
 import processing.core._
 import com.sun.org.apache.xalan.internal.xsltc.dom.KeyIndex
+import javax.sound.sampled._
 
 object SlapEmAll extends PApplet {
   
@@ -126,7 +127,18 @@ object SlapEmAll extends PApplet {
     val e = keyCode
    
         e match {
-        //TODO: lisätään mute-ominaisuus m-kirjaimelle
+        //Mutes the game when M is pressed 
+        case 77 => {
+        if(!muted){
+          muted = true
+          pirateControl.setValue(true)
+          slapControl.setValue(true)
+        }else{
+          muted = false
+          pirateControl.setValue(false)
+          slapControl.setValue(false)
+        }
+      }
         
         //restarts the game when SPACE is pressed  
           case 32 => {
@@ -145,19 +157,22 @@ object SlapEmAll extends PApplet {
             if(player.timeFromLastHit < 0) {
               player.hit(0);println("up")
               image(mAttackUp, middle * squareSize, middle * squareSize)
+              slapPlayer()
               player.timeFromLastHit = 15
             }
           }
           case 39 => {
             if(player.timeFromLastHit < 0) {
               player.hit(1);println("right")
-              image(mAttackRight, middle * squareSize, middle * squareSize) 
+              image(mAttackRight, middle * squareSize, middle * squareSize)
+              slapPlayer()
               player.timeFromLastHit = 15
             }
           }
           case 40 => {
             if(player.timeFromLastHit < 0) {
               player.hit(2)
+              slapPlayer()
               player.timeFromLastHit = 15
               }
             }
@@ -165,12 +180,45 @@ object SlapEmAll extends PApplet {
             if(player.timeFromLastHit < 0) {
               player.hit(3);println("left")
               image(mAttackLeft, middle * squareSize, middle * squareSize)
+              slapPlayer()
               player.timeFromLastHit = 15
             }
           }
           case _ => None
     }
   }
+  
+  //Sounds of the game  
+    // Background sound
+    private var muted = false
+    private val pirateFile = new File("pirate.wav")
+    private val pirateIn = AudioSystem.getAudioInputStream(pirateFile)
+    private var pirate = AudioSystem.getClip()
+    pirate.open(pirateIn)
+    Thread.sleep(12000)
+    
+    // Plays background sound
+    private def soundPlayer() = {
+      pirate.loop(Clip.LOOP_CONTINUOUSLY) 
+    }
+    
+    //Soundeffects
+    private val slapFile = new File("slap.wav")
+    private val slapIn = AudioSystem.getAudioInputStream(slapFile)
+    private var slap = AudioSystem.getClip()
+    slap.open(slapIn)
+    
+    //Plays soundeffect
+    private def slapPlayer() = {
+      slap.setFramePosition(0)
+      slap.start()
+    }
+    
+    //Muting sound
+    private val pirateControl: BooleanControl = pirate.getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
+    private val slapControl: BooleanControl = slap.getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
+        
+    
   def main(args: Array[String]) {
     val frame = new javax.swing.JFrame("Slap 'em All!")
     
@@ -181,7 +229,7 @@ object SlapEmAll extends PApplet {
     frame.setVisible(true)
     frame.setLocationRelativeTo(null)
     frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE)
- //   SoundPlayer.playSound()
+    soundPlayer()
   }
   
 }
