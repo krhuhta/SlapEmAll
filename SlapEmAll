@@ -30,6 +30,8 @@ object SlapEmAll extends PApplet {
   val mAttackLeft = loadImage("mermaidPic_left.png")
   val mAttackUp = loadImage("mermaidPic_up.png")
   val mAttackRight = loadImage("mermaidPic_right.png")
+  val mAttackDown = loadImage("mermaidPic_down.png")
+  val cannedMermaidPic = loadImage("endingPic.png")
   
   override def setup() : Unit = {
     size(gridSize, gridSize)
@@ -69,7 +71,33 @@ object SlapEmAll extends PApplet {
   private def drawStart = {
     val font = createFont("Arial Black", 100, true)
     image(startPic, 0, 0, gridSize, gridSize)
-      textFont(font, 30)
+    
+    noStroke()
+    fill(255, 255, 255, 191)
+    rect(50, 50, 480, 110)
+    textFont(font, 30)
+    fill(5, 40, 96)
+    text("Pirates are attacking you!", 80, 80, 440, 120)
+    fill(255, 255, 255, 161)
+    rect(50, 160, 480, 145)
+    textFont(font, 20)
+    fill(6, 48, 114)
+    text("Slap them with the arrow keys.", 80, 180, 440, 240)
+    text("Press 'M' to mute the music and 'N' to mute the soundeffects.", 80, 220, 440, 260) 
+    // Level buttons
+    stroke(5, 40, 96)
+    fill(53, 83, 132, 131)
+    rect(50, 315, 240, 70, 7)
+    rect(50, 395, 240, 70, 7)
+    rect(50, 475, 240, 70, 7)
+    textFont(font, 30)
+    fill(1, 34, 142)
+    text("Level 1", 115, 325, 290, 385)
+    text("Level 2", 115, 405, 290, 385)
+    text("Level 3", 115, 485, 290, 385)
+    
+    
+      /*textFont(font, 30)
       fill(255, 255, 255)
       text("You are stranded on a dock and evil pirates are trying to attack you", 50, 50, 400, 600)
       textFont(font, 25)
@@ -78,6 +106,7 @@ object SlapEmAll extends PApplet {
       textFont(font, 30)
       fill(0, 0, 0)
       text("Press 1 for level 1, or 2 for level 2", 50, 400, 330, 500)
+  */
   }
   
   private def drawBoard = {
@@ -116,13 +145,61 @@ object SlapEmAll extends PApplet {
       } else image(mPic, middle * squareSize, middle * squareSize)
       if (!gameWorld.hasLost) {
         fill(255, 255, 255)
-        text(s"${gameWorld.pointCount}", 200, 600, 330, 500)
+        text(s"Points: ${gameWorld.pointCount}", 100, 720, 400, 800)
       }
   }
   
+  /* Draws the restart button and the achieved score.
+   * 
+   */
   private def drawEnd = {
+    val font = createFont("Arial Black", 100, true)
+    image(cannedMermaidPic, 0, 0)
     fill(255, 255, 255)
-      text(s"You lost the game with ${gameWorld.pointCount} points! Restart by pressing space.", 50, 500, 330, 500)
+    text(s"${gameWorld.pointCount}", 420, 720, 500, 800)
+    
+    stroke(0, 0, 0)
+    fill(0, 0, 0, 191)
+    rect(360, 800, 180, 80)
+    textFont(font, 35)
+    fill(255, 255, 255)
+    text("Restart", 380, 812, 550, 900)
+  }
+  
+  override def mouseClicked() : Unit = {
+    /* Reacts to the clicking of level buttons
+     * 
+     */
+    if (stage == 0) {
+      if (80 < mouseX && mouseX < 320) {
+        if (315 < mouseY && mouseY < 385) {
+          stage = 1
+          soundPlayer()
+        } else if (395 < mouseY && mouseY < 465) {
+          stage = 2
+          soundPlayer()
+        }
+        // TODO: the comment marks are removed when level 3 exists
+        /*else if (475 < mouseY && mouseY < 545) {
+          stage = 3
+          soundPlayer()
+        }
+        * 
+        */
+      }
+    /* Reacts to the clicking of the restart button
+     * 
+     */
+    } else if (gameWorld.hasLost) {
+      if (360 < mouseX && mouseX < 540 && 
+          800 < mouseY && mouseY < 880) {
+        stage = 0 
+        loop()
+        gameWorld.boot()
+        frameRate(60)
+      }
+    }
+    
   }
   
   override def keyPressed() : Unit = {
@@ -159,16 +236,12 @@ object SlapEmAll extends PApplet {
             }
           }
         //the game starts when 1 or 2 is pressed
-          case 49 => {
-            if (stage == 0) {
-             stage = 1; soundPlayer() 
-            }
-          }
-          case 50 => { 
-            if (stage == 0) {
-              stage = 2; soundPlayer()
-            }
-          }
+          /*
+          case 49 => { stage = 1; soundPlayer() } 
+          case 50 => { stage = 2; soundPlayer() }
+          * 
+          */
+          
         //arrow keys
           case 38 => { 
             if(player.timeFromLastHit < 0) {
@@ -189,6 +262,7 @@ object SlapEmAll extends PApplet {
           case 40 => {
             if(player.timeFromLastHit < 0) {
               player.hit(2)
+              image(mAttackDown, middle * squareSize, middle * squareSize)
               slapPlayer()
               player.timeFromLastHit = 15
               }
