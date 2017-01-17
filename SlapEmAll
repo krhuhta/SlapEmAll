@@ -76,12 +76,13 @@ object SlapEmAll extends PApplet {
           move()
           if (gameWorld.pointCount >= 0    && gameWorld.pointCount <= 590)  spawn()
           if (gameWorld.pointCount >= 640  && gameWorld.pointCount <= 1240) spawn()
-          if (gameWorld.pointCount >= 1280 && gameWorld.pointCount <= 2470) spawn()
-          if (gameWorld.pointCount >= 2550 && gameWorld.pointCount <= 3000) spawn()
-          if (gameWorld.pointCount >= 3080 && gameWorld.pointCount <= 4070) spawn()
+          if (gameWorld.pointCount >= 1280 && gameWorld.pointCount <= 1890) spawn()
+          if (gameWorld.pointCount >= 1950 && gameWorld.pointCount <= 2570) spawn()
+          if (gameWorld.pointCount >= 2630 && gameWorld.pointCount <= 3150) spawn()
+          if (gameWorld.pointCount >= 3210 && gameWorld.pointCount <= 4070) spawn()
           addPoints()
           gameWorld.checkIfLost()
-          if (gameWorld.pointCount == 620 || gameWorld.pointCount == 1271 || gameWorld.pointCount == 2502 || gameWorld.pointCount == 3043) {
+          if (gameWorld.pointCount == 620 || gameWorld.pointCount == 1271 || gameWorld.pointCount == 2602 || gameWorld.pointCount == 3183) {
             frameRate((frameRate*1.14f).toInt)
             gameWorld.addOnePoint
           }
