@@ -144,21 +144,24 @@ object SlapEmAll extends PApplet {
       }
   }
   
-  /* Draws the restart button and the achieved score.
-   * 
-   */
-  private def drawEnd = {
+  private def drawRestart(seeThroughness: Int) = {
     val font = createFont("Arial Black", 100, true)
-    image(cannedMermaidPic, 0, 0)
-    fill(255, 255, 255)
-    text(s"${gameWorld.pointCount}", 420, 720, 500, 800)
-    
     stroke(0, 0, 0)
-    fill(0, 0, 0, 191)
+    fill(0, 0, 0, seeThroughness)
     rect(360, 800, 180, 80, 7)
     textFont(font, 35)
     fill(255, 255, 255)
     text("Restart", 380, 812, 550, 900)
+  }
+  
+  /* Draws the restart button and the achieved score.
+   * 
+   */
+  private def drawEnd = {
+    image(cannedMermaidPic, 0, 0)
+    fill(255, 255, 255)
+    text(s"${gameWorld.pointCount}", 420, 720, 500, 800)
+    drawRestart(191)
   }
   
   /* Checks if the cursor is over a level button. 
@@ -200,15 +203,9 @@ object SlapEmAll extends PApplet {
    * Changes the color of the button if the mouse is over it.
    */
   private def checkIfRestartButton = {
-    val font = createFont("Arial Black", 100, true)
     if (360 < mouseX && mouseX < 540 && 
           800 < mouseY && mouseY < 880) {
-      stroke(0, 0, 0)
-      fill(0, 0, 0)
-      rect(360, 800, 180, 80, 7)
-      textFont(font, 35)
-      fill(255, 255, 255)
-      text("Restart", 380, 812, 550, 900)
+      drawRestart(255)
     } else {
       drawBoard
       drawEnd
