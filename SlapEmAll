@@ -11,10 +11,12 @@ object SlapEmAll extends PApplet {
   val player = new Player(gameWorld)
   private var speed = 30
   private var stage = 0
+  private var endScreen = false
   
   val squares = gameWorld.BoardSize
   val gridSize = squares * squareSize
   val middle = squares / 2
+  
 
   val mPic = loadImage("mermaidPic_burned.png")
   val pPic = loadImage("piraattiPicture_burned.png")
@@ -34,31 +36,36 @@ object SlapEmAll extends PApplet {
   }
   
   override def draw() : Unit = {
-    if (stage == 0) {
-      drawStart
-    }
-    if (stage == 1 || stage == 2) {
-      if (stage == 1) {
-        if(frameCount % speed == 0) {     // advances the game according the the frames
-          gameWorld.advanceGame()
-        }
-      } else {
-        if(frameCount % speed == 0) {     // advances the game according the the frames
-          gameWorld.advanceGameDoubles()
-        }
+    if (!gameWorld.hasLost) {
+      if (stage == 0) {
+        drawStart
+        this.checkIfLevelButton
       }
-      drawBoard
-      // speeds up the game
-      player.timeFromLastHit -= 1
-      if (frameCount % 250 == 0) {
-        frameRate(frameRate + 5)  
-      } 
-      if (gameWorld.hasLost) {
-      drawEnd
-      pirate.stop()
-      pirate.setFramePosition(0)
-      noLoop
+      if (stage == 1 || stage == 2) {
+        if (stage == 1) {
+          if(frameCount % speed == 0) {     // advances the game according the the frames
+            gameWorld.advanceGame()
+          }
+        } else {
+          if(frameCount % speed == 0) {     // advances the game according the the frames
+            gameWorld.advanceGameDoubles()
+          }
+        }
+        drawBoard
+        // speeds up the game
+        player.timeFromLastHit -= 1
+        if (frameCount % 250 == 0) {
+          frameRate(frameRate + 5)  
+        } 
       }
+    } else {
+        if (!endScreen) {
+          drawEnd
+          pirate.stop()
+          pirate.setFramePosition(0)
+        }
+        endScreen = true
+        this.checkIfRestartButton
     }
   }
   
@@ -154,6 +161,60 @@ object SlapEmAll extends PApplet {
     text("Restart", 380, 812, 550, 900)
   }
   
+  /* Checks if the cursor is over a level button. 
+   * Changes the color of the button if it is.
+   */
+  private def checkIfLevelButton = {
+    val font = createFont("Arial Black", 100, true)
+      if (80 < mouseX && mouseX < 320) {
+        if (315 < mouseY && mouseY < 385) {
+          stroke(5, 40, 96)
+          fill(53, 83, 132)
+          rect(50, 315, 240, 70, 7)
+          textFont(font, 30)
+          fill(1, 34, 142)
+          text("Level 1", 115, 325, 290, 385)
+        } else if (395 < mouseY && mouseY < 465) {
+          stroke(5, 40, 96)
+          fill(53, 83, 132)
+          rect(50, 395, 240, 70, 7)
+          textFont(font, 30)
+          fill(1, 34, 142)
+          text("Level 2", 115, 405, 290, 385)
+        }
+        // TODO: the comment marks are removed when level 3 exists
+        /*else if (475 < mouseY && mouseY < 545) {
+          stroke(5, 40, 96)
+          fill(53, 83, 132)
+          rect(50, 475, 240, 70, 7)
+          textFont(font, 30)
+    			fill(1, 34, 142)
+    			text("Level 3", 115, 485, 290, 385)
+        }
+        * 
+        */
+      }
+  }
+  
+  /* Checks if the cursor is over the restart button.
+   * Changes the color of the button if the mouse is over it.
+   */
+  private def checkIfRestartButton = {
+    val font = createFont("Arial Black", 100, true)
+    if (360 < mouseX && mouseX < 540 && 
+          800 < mouseY && mouseY < 880) {
+      stroke(0, 0, 0)
+      fill(0, 0, 0)
+      rect(360, 800, 180, 80, 7)
+      textFont(font, 35)
+      fill(255, 255, 255)
+      text("Restart", 380, 812, 550, 900)
+    } else {
+      drawBoard
+      drawEnd
+    }
+  }
+  
   override def mouseClicked() : Unit = {
     /* Reacts to the clicking of level buttons
      * 
@@ -185,6 +246,7 @@ object SlapEmAll extends PApplet {
         loop()
         gameWorld.boot()
         frameRate(60)
+        endScreen = false
       }
     }
     
