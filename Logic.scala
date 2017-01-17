@@ -15,6 +15,7 @@ class World {
   private var time = 0
   private var points = 0
   def pointCount = points
+  def addOnePoint = points += 1
   
   def boot() = {
     points = 0
@@ -58,21 +59,21 @@ class World {
         }
       }
   }
+  def checkIfLost() = {
+    if (enemies(lineLength)(lineLength).isDefined) lose()//Checks if an enemy is on top of the player (and loses the game if true)
+  }
+  
+  def addPoints() = {
+    points += 10  
+  }
+  
   def advanceGame() = {                                                          //Advances the game
     advanceEnemies()
     newEnemy()
-    if (enemies(lineLength)(lineLength).isDefined) lose() //Checks if an enemy is on top of the player (and loses the game if true)
-    points += 10    
+    addPoints()
+    checkIfLost() 
   }
-  
-  def advanceGameDoubles() = {                                                          //Advances the game
-    advanceEnemies()
-    newEnemy()
-    if (time > 10 && time % 10 == 0) newEnemy()
-    if (enemies(lineLength)(lineLength).isDefined) lose() //Checks if an enemy is on top of the player (and loses the game if true)
-    points += 12
-    time += 1
-  }
+
 }
 
 
