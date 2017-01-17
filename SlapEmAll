@@ -320,7 +320,8 @@ object SlapEmAll extends PApplet {
     pirate.open(pirateIn)
     //Thread.sleep(12000)
     
-    // Plays background sound
+    /** Plays background sound
+    */
     private def soundPlayer() = {
       pirate.loop(Clip.LOOP_CONTINUOUSLY) 
     }
@@ -332,7 +333,8 @@ object SlapEmAll extends PApplet {
     private var slap = AudioSystem.getClip()
     slap.open(slapIn)
     
-    //Plays soundeffect
+    /**Plays soundeffect
+    */
     private def slapPlayer() = {
       slap.setFramePosition(0)
       slap.start()
