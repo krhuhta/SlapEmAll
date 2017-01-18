@@ -340,28 +340,7 @@ object SlapEmAll extends PApplet {
         case _  => None
       }
   }
-
   
-  /** Plays background sound
-  */
-  private def soundPlayer1() = {
-    Sounds.pirate.loop(Clip.LOOP_CONTINUOUSLY) 
-  }
-  private def soundPlayer2() = {
-    bitPirate.setFramePosition(0)
-    bitPirate.start()
-  }
-  private def soundPlayer3() = {
-    speedUpPirate.setFramePosition(0)
-    speedUpPirate.start() 
-  }
-    
-  /**Plays soundeffect
-  */
-  private def slapPlayer() = {
-    slap.setFramePosition(0)
-    slap.start()
-  }
     
   def main(args: Array[String]) {
     val frame = new javax.swing.JFrame("Slap 'em All!")
