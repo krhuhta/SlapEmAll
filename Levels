@@ -1,5 +1,49 @@
-
+import SlapEmAll._
 
 class Levels {
+  private var speed = 0               //The numebr of frames in between each pirate spawn. Value assinged at the start of each level
+  def stageOne() = {
+    speed = 30
+    if(frameCount % speed == 0) {     // advances the game according the the frames
+      gameWorld.advanceGame()
+    }
+    if (frameCount % 250 == 0) {
+      frameRate(frameRate + 5)        // speeds up the game
+    } 
+  }
   
+  def stageTwo() = {
+    speed = 24
+    if (frameCount % speed == 0) {     // advances the game according the the frames
+      if (gameWorld.pointCount < 2520) {
+        gameWorld.advanceGame()
+      } else {
+        gameWorld.advanceEnemies()
+        gameWorld.addPoints()
+        gameWorld.checkIfLost()
+      }
+    }
+    if (gameWorld.pointCount == 2600) {
+      gameWorld.win()
+    }
+  }
+  
+  def stageThree() = {
+    speed = 24
+    if(frameCount % speed == 0) {
+      gameWorld.advanceEnemies()
+      if (gameWorld.pointCount >= 0    && gameWorld.pointCount <= 580)  gameWorld.newEnemy()
+      if (gameWorld.pointCount >= 630  && gameWorld.pointCount <= 1230) gameWorld.newEnemy()
+      if (gameWorld.pointCount >= 1280 && gameWorld.pointCount <= 1880) gameWorld.newEnemy()
+      if (gameWorld.pointCount >= 1930 && gameWorld.pointCount <= 2560) gameWorld.newEnemy()
+      if (gameWorld.pointCount >= 2610 && gameWorld.pointCount <= 3140) gameWorld.newEnemy()
+      if (gameWorld.pointCount >= 3190 && gameWorld.pointCount <= 4070) gameWorld.newEnemy()
+      if (gameWorld.pointCount == 4140) gameWorld.win()
+      gameWorld.addPoints()
+      gameWorld.checkIfLost()
+      if (gameWorld.pointCount == 620 || gameWorld.pointCount == 1270 || gameWorld.pointCount == 1920 || gameWorld.pointCount == 2600 || gameWorld.pointCount == 3180) {
+        frameRate((frameRate*1.14f).toInt)
+      }
+    }
+  }
 }
