@@ -1,0 +1,56 @@
+
+
+object Sounds {
+  
+  import processing.core._
+  import SlapEmAll._
+  import java.io.File
+  import javax.sound.sampled._
+  import javax.swing._
+
+  //Sounds of the game  
+  
+  var muted = false
+  
+    /*
+   * level 1 music
+   */
+  private val pirateFile = new File("pirate.wav")
+  private val pirateIn = AudioSystem.getAudioInputStream(pirateFile)
+  val pirate = AudioSystem.getClip()
+  pirate.open(pirateIn)
+  
+  /*
+   * level 2 music
+   */
+  private val bitPirateFile = new File("BitPirates.wav")
+  private val bitPirateIn = AudioSystem.getAudioInputStream(bitPirateFile)
+  val bitPirate = AudioSystem.getClip()
+  bitPirate.open(bitPirateIn)
+   /*
+   * level 3 music
+   */
+  private val speedUpPirateFile = new File("SpeedUpPirates.wav")
+  private val speedUpPirateIn = AudioSystem.getAudioInputStream(speedUpPirateFile)
+  val speedUpPirate = AudioSystem.getClip()
+  speedUpPirate.open(speedUpPirateIn)
+  
+    
+  /*
+   * Soundeffects
+   */
+  var slapMuted = false
+  private val slapFile = new File("slap.wav")
+  private val slapIn = AudioSystem.getAudioInputStream(slapFile)
+  val slap = AudioSystem.getClip()
+  slap.open(slapIn)
+  
+   /*
+   * Muting sounds
+   */
+  val pirateControl       : BooleanControl = pirate.       getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
+  val slapControl         : BooleanControl = slap.         getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
+  val bitPirateControl    : BooleanControl = bitPirate.    getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
+  val speedUpPirateControl: BooleanControl = speedUpPirate.getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
+   
+}
