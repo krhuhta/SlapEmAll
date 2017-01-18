@@ -7,10 +7,15 @@ class World {
   val BoardSize = lineLength * 2 + 1
   var enemies: Array[Array[Option[Enemy]]] = Array.fill(BoardSize, BoardSize)(None)
   
-  private var gameOver = false
-  def lose() = gameOver = true
-  def unLose() = gameOver = false
-  def hasLost = gameOver
+  private var gameLost = false
+  def lose() = gameLost = true
+  def unLose() = gameLost = false
+  def hasLost = gameLost
+  
+  private var gameWon = false
+  def win() = gameWon = true
+  def unWin() = gameWon = false
+  def hasWon = gameWon
 
   private var time = 0
   private var points = 0
@@ -21,6 +26,7 @@ class World {
     points = 0
     enemies = Array.fill(BoardSize, BoardSize)(None)
     unLose()
+    unWin()
   }
 
   def newEnemy() = {
