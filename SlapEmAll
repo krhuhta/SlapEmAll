@@ -36,21 +36,6 @@ object SlapEmAll extends PApplet {
     frameRate(60)
     
   }
-  private def spawn() = {
-    if(frameCount % speed == 0) {     // advances the game according the the frames
-      gameWorld.newEnemy()
-    }
-  }
-  private def move() = {
-    if(frameCount % speed == 0) {     // advances the game according the the frames
-      gameWorld.advanceEnemies()
-    }
-  }
-  private def addPoints() = {
-    if(frameCount % speed == 0) {     // advances the game according the the frames
-      gameWorld.addPoints()
-    }
-  }
   
   private def stageOne() = {
     speed = 30
@@ -68,8 +53,8 @@ object SlapEmAll extends PApplet {
       if (gameWorld.pointCount < 2520) {
         gameWorld.advanceGame()
       } else {
-        move()
-        addPoints()
+        gameWorld.advanceEnemies()
+        gameWorld.addPoints()
         gameWorld.checkIfLost()
       }
     }
@@ -80,19 +65,20 @@ object SlapEmAll extends PApplet {
   
   private def stageThree() = {
     speed = 24
-    move()
-    if (gameWorld.pointCount >= 0    && gameWorld.pointCount <= 590)  spawn()
-    if (gameWorld.pointCount >= 640  && gameWorld.pointCount <= 1240) spawn()
-    if (gameWorld.pointCount >= 1280 && gameWorld.pointCount <= 1890) spawn()
-    if (gameWorld.pointCount >= 1950 && gameWorld.pointCount <= 2570) spawn()
-    if (gameWorld.pointCount >= 2630 && gameWorld.pointCount <= 3150) spawn()
-    if (gameWorld.pointCount >= 3210 && gameWorld.pointCount <= 4070) spawn()
-    if (gameWorld.pointCount == 4124) gameWorld.win()
-    addPoints()
-    gameWorld.checkIfLost()
-    if (gameWorld.pointCount == 620 || gameWorld.pointCount == 1271 || gameWorld.pointCount == 2602 || gameWorld.pointCount == 3183) {
-      frameRate((frameRate*1.14f).toInt)
-      gameWorld.addOnePoint
+    if(frameCount % speed == 0) {
+      gameWorld.advanceEnemies()
+      if (gameWorld.pointCount >= 0    && gameWorld.pointCount <= 590)  gameWorld.newEnemy()
+      if (gameWorld.pointCount >= 640  && gameWorld.pointCount <= 1240) gameWorld.newEnemy()
+      if (gameWorld.pointCount >= 1280 && gameWorld.pointCount <= 1890) gameWorld.newEnemy()
+      if (gameWorld.pointCount >= 1950 && gameWorld.pointCount <= 2570) gameWorld.newEnemy()
+      if (gameWorld.pointCount >= 2630 && gameWorld.pointCount <= 3150) gameWorld.newEnemy()
+      if (gameWorld.pointCount >= 3210 && gameWorld.pointCount <= 4070) gameWorld.newEnemy()
+      if (gameWorld.pointCount == 4124) gameWorld.win()
+      gameWorld.addPoints()
+      gameWorld.checkIfLost()
+      if (gameWorld.pointCount == 620 || gameWorld.pointCount == 1270 || gameWorld.pointCount == 2600 || gameWorld.pointCount == 3180) {
+        frameRate((frameRate*1.14f).toInt)
+      }
     }
   }
   
