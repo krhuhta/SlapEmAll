@@ -10,7 +10,8 @@ object SlapEmAll extends PApplet {
   val squareSize = 100
   val gameWorld = new World
   val player = new Player(gameWorld)
-  private var speed = 0               //The numebr of frames in between each pirate spawn. Value assinged at the start of each level
+  val levels = new Levels
+  
   private var stage = 0               //Stage 0 is the menu
   private var endScreen = false       //Are we currently at the endScreen?
   
@@ -37,51 +38,7 @@ object SlapEmAll extends PApplet {
     frameRate(60)
     
   }
-  
-  private def stageOne() = {
-    speed = 30
-    if(frameCount % speed == 0) {     // advances the game according the the frames
-      gameWorld.advanceGame()
-    }
-    if (frameCount % 250 == 0) {
-      frameRate(frameRate + 5)        // speeds up the game
-    } 
-  }
-  
-  private def stageTwo() = {
-    speed = 24
-    if (frameCount % speed == 0) {     // advances the game according the the frames
-      if (gameWorld.pointCount < 2520) {
-        gameWorld.advanceGame()
-      } else {
-        gameWorld.advanceEnemies()
-        gameWorld.addPoints()
-        gameWorld.checkIfLost()
-      }
-    }
-    if (gameWorld.pointCount == 2600) {
-      gameWorld.win()
-    }
-  }
-  
-  private def stageThree() = {
-    speed = 24
-    if(frameCount % speed == 0) {
-      gameWorld.advanceEnemies()
-      if (gameWorld.pointCount >= 0    && gameWorld.pointCount <= 580)  gameWorld.newEnemy()
-      if (gameWorld.pointCount >= 630  && gameWorld.pointCount <= 1230) gameWorld.newEnemy()
-      if (gameWorld.pointCount >= 1280 && gameWorld.pointCount <= 1880) gameWorld.newEnemy()
-      if (gameWorld.pointCount >= 1930 && gameWorld.pointCount <= 2560) gameWorld.newEnemy()
-      if (gameWorld.pointCount >= 2610 && gameWorld.pointCount <= 3140) gameWorld.newEnemy()
-      if (gameWorld.pointCount >= 3190 && gameWorld.pointCount <= 4070) gameWorld.newEnemy()
-      if (gameWorld.pointCount == 4140) gameWorld.win()
-      gameWorld.addPoints()
-      gameWorld.checkIfLost()
-      if (gameWorld.pointCount == 620 || gameWorld.pointCount == 1270 || gameWorld.pointCount == 1920 || gameWorld.pointCount == 2600 || gameWorld.pointCount == 3180) {
-        frameRate((frameRate*1.14f).toInt)
-      }
-    }
-  }
+
   
   override def draw() : Unit = {
     if (!gameWorld.hasLost && !gameWorld.hasWon) {
@@ -91,15 +48,15 @@ object SlapEmAll extends PApplet {
           this.checkIfLevelButton
         }
         case 1 => {
-          stageOne()
+          levels.stageOne()
           drawBoard
         }
         case 2 => {
-          stageTwo()
+          levels.stageTwo()
           drawBoard
         }
         case 3 => {
-          stageThree()
+          levels.stageThree()
           drawBoard
         }
         case _ => None
@@ -298,6 +255,10 @@ object SlapEmAll extends PApplet {
         gameWorld.boot()
         frameRate(60)
         endScreen = false
+        losing.stop()
+        losing.setFramePosition(0)
+        winning.stop()
+        winning.setFramePosition(0)
       }
     }
     
