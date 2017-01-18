@@ -3,6 +3,7 @@ import javax.swing.event._
 import processing.core._
 import com.sun.org.apache.xalan.internal.xsltc.dom.KeyIndex
 import javax.sound.sampled._
+import Sounds._
 
 object SlapEmAll extends PApplet {
   
@@ -274,7 +275,7 @@ object SlapEmAll extends PApplet {
       if (80 < mouseX && mouseX < 320) {
         if (315 < mouseY && mouseY < 385) {
           stage = 1
-          soundPlayer()
+          soundPlayer1()
         } else if (395 < mouseY && mouseY < 465) {
           stage = 2
           soundPlayer2()
@@ -373,51 +374,21 @@ object SlapEmAll extends PApplet {
         case _  => None
       }
   }
-  
-  //Sounds of the game  
-  /*
-   * level 1 music
-   */
-  private var muted = false
-  private val pirateFile = new File("pirate.wav")
-  private val pirateIn = AudioSystem.getAudioInputStream(pirateFile)
-  private var pirate = AudioSystem.getClip()
-  pirate.open(pirateIn)
-  /*
-   * level 2 music
-   */
-  private val bitPirateFile = new File("BitPirates.wav")
-  private val bitPirateIn = AudioSystem.getAudioInputStream(bitPirateFile)
-  private var bitPirate = AudioSystem.getClip()
-  bitPirate.open(bitPirateIn)
-   /*
-   * level 3 music
-   */
-  private val speedUpPirateFile = new File("SpeedUpPirates.wav")
-  private val speedUpPirateIn = AudioSystem.getAudioInputStream(speedUpPirateFile)
-  private var speedUpPirate = AudioSystem.getClip()
-  speedUpPirate.open(speedUpPirateIn)
+
   
   /** Plays background sound
   */
-  private def soundPlayer() = {
-    pirate.loop(Clip.LOOP_CONTINUOUSLY) 
+  private def soundPlayer1() = {
+    Sounds.pirate.loop(Clip.LOOP_CONTINUOUSLY) 
   }
   private def soundPlayer2() = {
-    bitPirate.loop(Clip.LOOP_CONTINUOUSLY) 
+    bitPirate.setFramePosition(0)
+    bitPirate.start()
   }
   private def soundPlayer3() = {
-    speedUpPirate.loop(Clip.LOOP_CONTINUOUSLY) 
+    speedUpPirate.setFramePosition(0)
+    speedUpPirate.start() 
   }
-    
-  /*
-   * Soundeffects
-   */
-  private var slapMuted = false
-  private val slapFile = new File("slap.wav")
-  private val slapIn = AudioSystem.getAudioInputStream(slapFile)
-  private var slap = AudioSystem.getClip()
-  slap.open(slapIn)
     
   /**Plays soundeffect
   */
@@ -426,14 +397,6 @@ object SlapEmAll extends PApplet {
     slap.start()
   }
     
-  /*
-   * Muting sounds
-   */
-  private val pirateControl       : BooleanControl = pirate.       getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
-  private val slapControl         : BooleanControl = slap.         getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
-  private val bitPirateControl    : BooleanControl = bitPirate.    getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
-  private val speedUpPirateControl: BooleanControl = speedUpPirate.getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
-   
   def main(args: Array[String]) {
     val frame = new javax.swing.JFrame("Slap 'em All!")
     
