@@ -115,6 +115,7 @@ object SlapEmAll extends PApplet {
           bitPirate.setFramePosition(0)
           speedUpPirate.stop()
           speedUpPirate.setFramePosition(0)
+          if(gameWorld.hasWon) winning.start() else losing.start()
         }
         endScreen = true
         this.checkIfRestartButton
@@ -355,9 +356,13 @@ object SlapEmAll extends PApplet {
           if(!slapMuted){
             slapMuted = true
             slapControl.setValue(true)
+            losingControl.setValue(true)
+            winningControl.setValue(true)
           } else {
             slapMuted = false
             slapControl.setValue(false)
+            losingControl.setValue(false)
+            winningControl.setValue(false)
           }
         }
         //wasd
