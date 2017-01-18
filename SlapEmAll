@@ -255,8 +255,6 @@ object SlapEmAll extends PApplet {
         gameWorld.boot()
         frameRate(60)
         endScreen = false
-        losePlayer()
-        winPlayer()
       }
     }
     
