@@ -45,6 +45,16 @@ object Sounds {
   val slap = AudioSystem.getClip()
   slap.open(slapIn)
   
+  private val winFile = new File("winning.wav")
+  private val winIn = AudioSystem.getAudioInputStream(winFile)
+  val winning = AudioSystem.getClip()
+  winning.open(winIn)
+  
+  private val loseFile = new File("losing.wav")
+  private val loseIn = AudioSystem.getAudioInputStream(loseFile)
+  val losing = AudioSystem.getClip()
+  losing.open(loseIn)
+  
    /*
    * Muting sounds
    */
@@ -52,5 +62,7 @@ object Sounds {
   val slapControl         : BooleanControl = slap.         getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
   val bitPirateControl    : BooleanControl = bitPirate.    getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
   val speedUpPirateControl: BooleanControl = speedUpPirate.getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
-   
+  val winningControl: BooleanControl = winning.getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
+  val losingControl: BooleanControl = losing.getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
+  
 }
