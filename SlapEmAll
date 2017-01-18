@@ -51,50 +51,77 @@ object SlapEmAll extends PApplet {
       gameWorld.addPoints()
     }
   }
+  
+  private def stageOne() = {
+    speed = 30
+    if(frameCount % speed == 0) {     // advances the game according the the frames
+      gameWorld.advanceGame()
+    }
+    if (frameCount % 250 == 0) {
+      frameRate(frameRate + 5)        // speeds up the game
+    } 
+  }
+  
+  private def stageTwo() = {
+    speed = 24
+    if (frameCount % speed == 0) {     // advances the game according the the frames
+      if (gameWorld.pointCount < 2520) {
+        gameWorld.advanceGame()
+      } else {
+        move()
+        addPoints()
+        gameWorld.checkIfLost()
+      }
+    }
+    if (gameWorld.pointCount == 2600) {
+      gameWorld.win()
+    }
+  }
+  
+  private def stageThree() = {
+    speed = 24
+    move()
+    if (gameWorld.pointCount >= 0    && gameWorld.pointCount <= 590)  spawn()
+    if (gameWorld.pointCount >= 640  && gameWorld.pointCount <= 1240) spawn()
+    if (gameWorld.pointCount >= 1280 && gameWorld.pointCount <= 1890) spawn()
+    if (gameWorld.pointCount >= 1950 && gameWorld.pointCount <= 2570) spawn()
+    if (gameWorld.pointCount >= 2630 && gameWorld.pointCount <= 3150) spawn()
+    if (gameWorld.pointCount >= 3210 && gameWorld.pointCount <= 4070) spawn()
+    if (gameWorld.pointCount == 4124) gameWorld.win()
+    addPoints()
+    gameWorld.checkIfLost()
+    if (gameWorld.pointCount == 620 || gameWorld.pointCount == 1271 || gameWorld.pointCount == 2602 || gameWorld.pointCount == 3183) {
+      frameRate((frameRate*1.14f).toInt)
+      gameWorld.addOnePoint
+    }
+  }
+  
   override def draw() : Unit = {
-    if (!gameWorld.hasLost) {
-      if (stage == 0) {
-        drawStart
-        this.checkIfLevelButton
-      }
-      if (stage == 1 || stage == 2 || stage == 3) {
-        if (stage == 1) {
-          speed = 30
-          if(frameCount % speed == 0) {     // advances the game according the the frames
-            gameWorld.advanceGame()
-          } 
-          if (frameCount % 250 == 0) {
-            frameRate(frameRate + 5)        // speeds up the game
-          } 
-        } else if (stage == 2) {
-          speed = 24
-          if(frameCount % speed == 0) {     // advances the game according the the frames
-            gameWorld.advanceGame()
-          } 
-        } else {
-          speed = 24
-          move()
-          if (gameWorld.pointCount >= 0    && gameWorld.pointCount <= 590)  spawn()
-          if (gameWorld.pointCount >= 640  && gameWorld.pointCount <= 1240) spawn()
-          if (gameWorld.pointCount >= 1280 && gameWorld.pointCount <= 1890) spawn()
-          if (gameWorld.pointCount >= 1950 && gameWorld.pointCount <= 2570) spawn()
-          if (gameWorld.pointCount >= 2630 && gameWorld.pointCount <= 3150) spawn()
-          if (gameWorld.pointCount >= 3210 && gameWorld.pointCount <= 4070) spawn()
-          addPoints()
-          gameWorld.checkIfLost()
-          if (gameWorld.pointCount == 620 || gameWorld.pointCount == 1271 || gameWorld.pointCount == 2602 || gameWorld.pointCount == 3183) {
-            frameRate((frameRate*1.14f).toInt)
-            gameWorld.addOnePoint
-          }
-          
+    if (!gameWorld.hasLost && !gameWorld.hasWon) {
+      stage match {
+        case 0 => {
+          drawStart
+          this.checkIfLevelButton
         }
-        drawBoard
-        player.timeFromLastHit -= 1
-        
+        case 1 => {
+          stageOne()
+          drawBoard
+        }
+        case 2 => {
+          stageTwo()
+          drawBoard
+        }
+        case 3 => {
+          stageThree()
+          drawBoard
+        }
+        case _ => None
       }
+
+      player.timeFromLastHit -= 1
     } else {
         if (!endScreen) {
-          drawEnd
+          if(gameWorld.hasLost) drawEnd else drawWin
           pirate.stop()
           pirate.setFramePosition(0)
           bitPirate.stop()
@@ -193,8 +220,8 @@ object SlapEmAll extends PApplet {
     text("Restart", 380, 812, 550, 900)
   }
   
-  /* Draws the restart button and the achieved score.
-   * 
+  /* 
+   * Draws the restart button, the achieved score and the loss screen. 
    */
   private def drawEnd = {
     image(cannedMermaidPic, 0, 0)
@@ -202,7 +229,12 @@ object SlapEmAll extends PApplet {
     text(s"${gameWorld.pointCount}", 420, 720, 500, 800)
     drawRestart(191)
   }
-  
+  /*
+   * Draws the restart button, the achieced score and the victory screen.
+   */ //TODO toteuta tämä metodi, muuten toimii
+  private def drawWin = {
+    ???
+  }
   /* Checks if the cursor is over a level button. 
    * Changes the color of the button if it is.
    */
@@ -393,7 +425,9 @@ object SlapEmAll extends PApplet {
     speedUpPirate.loop(Clip.LOOP_CONTINUOUSLY) 
   }
     
-  //Soundeffects
+  /*
+   * Soundeffects
+   */
   private var slapMuted = false
   private val slapFile = new File("slap.wav")
   private val slapIn = AudioSystem.getAudioInputStream(slapFile)
