@@ -72,7 +72,7 @@ object SlapEmAll extends PApplet {
           bitPirate.setFramePosition(0)
           speedUpPirate.stop()
           speedUpPirate.setFramePosition(0)
-          if(gameWorld.hasWon) winning.start() else losing.start()
+          if(gameWorld.hasWon) winPlayer() else losePlayer()
         }
         endScreen = true
         this.checkIfRestartButton
@@ -255,10 +255,8 @@ object SlapEmAll extends PApplet {
         gameWorld.boot()
         frameRate(60)
         endScreen = false
-        losing.stop()
-        losing.setFramePosition(0)
-        winning.stop()
-        winning.setFramePosition(0)
+        losePlayer()
+        winPlayer()
       }
     }
     
@@ -340,7 +338,7 @@ object SlapEmAll extends PApplet {
         case _  => None
       }
   }
-  
+
     
   def main(args: Array[String]) {
     val frame = new javax.swing.JFrame("Slap 'em All!")
