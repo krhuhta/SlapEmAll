@@ -300,7 +300,7 @@ object SlapEmAll extends PApplet {
     }
     
   }
-  def hitNorth() = { 
+  private def hitNorth() = { 
     if(player.timeFromLastHit < 0) {
       player.hit(0)
       image(mAttackUp, middle * squareSize, middle * squareSize)
@@ -308,7 +308,7 @@ object SlapEmAll extends PApplet {
       player.timeFromLastHit = 15
     }
   }
-  def hitEast() = {
+  private def hitEast() = {
     if(player.timeFromLastHit < 0) {
       player.hit(1)
       image(mAttackRight, middle * squareSize, middle * squareSize)
@@ -316,7 +316,7 @@ object SlapEmAll extends PApplet {
       player.timeFromLastHit = 15
       }
   }
-  def hitSouth() = {
+  private def hitSouth() = {
     if(player.timeFromLastHit < 0) {
       player.hit(2)
       image(mAttackDown, middle * squareSize, middle * squareSize)
@@ -324,7 +324,7 @@ object SlapEmAll extends PApplet {
       player.timeFromLastHit = 15
     }
   }
-  def hitWest() = {
+  private def hitWest() = {
     if(player.timeFromLastHit < 0) {
       player.hit(3)
       image(mAttackLeft, middle * squareSize, middle * squareSize)
@@ -334,45 +334,44 @@ object SlapEmAll extends PApplet {
   }
   override def keyPressed() : Unit = {
     val e = keyCode
-   
-        e match {
+      e match {
         //Mutes the music when M is pressed 
         case 77 => {
-        if(!muted){
-          muted = true
-          pirateControl.setValue(true)
-          bitPirateControl.setValue(true)
-          speedUpPirateControl.setValue(true)
-        }else{
-          muted = false
-          pirateControl.setValue(false)
-          bitPirateControl.setValue(false)
-          speedUpPirateControl.setValue(false)
+          if(!muted){
+            muted = true
+            pirateControl.setValue(true)
+            bitPirateControl.setValue(true)
+            speedUpPirateControl.setValue(true)
+          } else {
+            muted = false
+            pirateControl.setValue(false)
+            bitPirateControl.setValue(false)
+            speedUpPirateControl.setValue(false)
+          }
         }
-      }
         //Mutes the soundeffects when N is pressed
         case 78 => {
-        if(!slapMuted){
-          slapMuted = true
-          slapControl.setValue(true)
-        }else{
-          slapMuted = false
-          slapControl.setValue(false)
+          if(!slapMuted){
+            slapMuted = true
+            slapControl.setValue(true)
+          } else {
+            slapMuted = false
+            slapControl.setValue(false)
+          }
         }
-      }
         //wasd
-          case 87 => hitNorth()
-          case 68 => hitEast()
-          case 83 => hitSouth()
-          case 65 => hitWest()
+        case 87 => hitNorth()
+        case 68 => hitEast()
+        case 83 => hitSouth()
+        case 65 => hitWest()
         //arrow keys
-          case 38 => hitNorth()
-          case 39 => hitEast()
-          case 40 => hitSouth()
-          case 37 => hitWest()
+        case 38 => hitNorth()
+        case 39 => hitEast()
+        case 40 => hitSouth()
+        case 37 => hitWest()
           
-          case _  => None
-    }
+        case _  => None
+      }
   }
   
   //Sounds of the game  
