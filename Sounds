@@ -64,5 +64,38 @@ object Sounds {
   val speedUpPirateControl: BooleanControl = speedUpPirate.getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
   val winningControl: BooleanControl = winning.getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
   val losingControl: BooleanControl = losing.getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
+
+     
+  /** Plays background sounds
+  */
+  def soundPlayer1() = {
+    Sounds.pirate.loop(Clip.LOOP_CONTINUOUSLY) 
+  }
+  def soundPlayer2() = {
+    bitPirate.setFramePosition(0)
+    bitPirate.start()
+  }
+  def soundPlayer3() = {
+    speedUpPirate.setFramePosition(0)
+    speedUpPirate.start() 
+  }
+    
+
+    /**Plays soundeffects
+  */
+  def slapPlayer() = {
+    slap.setFramePosition(0)
+    slap.start()
+  }
   
+  def winPlayer() = {
+    winning.setFramePosition(0)
+    winning.start()
+  }
+  
+  def losePlayer() = {
+    losing.setFramePosition(0)
+    losing.start()
+  }
+   
 }
