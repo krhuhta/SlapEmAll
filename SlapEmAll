@@ -35,7 +35,7 @@ object SlapEmAll extends PApplet {
   
   override def setup() : Unit = {
     size(gridSize, gridSize)
-    frameRate(60)
+    frameRate(30)
     
   }
 
@@ -264,7 +264,7 @@ object SlapEmAll extends PApplet {
       player.hit(0)
       image(mAttackUp, middle * squareSize, middle * squareSize)
       slapPlayer()
-      player.timeFromLastHit = 15
+      player.timeFromLastHit = 8
     }
   }
   private def hitEast() = {
@@ -272,7 +272,7 @@ object SlapEmAll extends PApplet {
       player.hit(1)
       image(mAttackRight, middle * squareSize, middle * squareSize)
       slapPlayer()
-      player.timeFromLastHit = 15
+      player.timeFromLastHit = 8
       }
   }
   private def hitSouth() = {
@@ -280,7 +280,7 @@ object SlapEmAll extends PApplet {
       player.hit(2)
       image(mAttackDown, middle * squareSize, middle * squareSize)
       slapPlayer()
-      player.timeFromLastHit = 15
+      player.timeFromLastHit = 8
     }
   }
   private def hitWest() = {
@@ -288,7 +288,7 @@ object SlapEmAll extends PApplet {
       player.hit(3)
       image(mAttackLeft, middle * squareSize, middle * squareSize)
       slapPlayer()
-      player.timeFromLastHit = 15
+      player.timeFromLastHit = 8
     }
   }
   override def keyPressed() : Unit = {
