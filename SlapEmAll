@@ -7,17 +7,17 @@ import Sounds._
 
 object SlapEmAll extends PApplet {
   
-  private val squareSize = 100
-  private val gameWorld = new World
-  private val player = new Player(gameWorld)
-  private val levels = new Levels
+  val squareSize = 100
+  val gameWorld = new World
+  val player = new Player(gameWorld)
+  val levels = new Levels
   
   private var stage = 0               //Stage 0 is the menu
   private var endScreen = false       //Tells whether the endScreen has been drawn once or not (used when the game ends)
   
-  private val squares = gameWorld.BoardSize
-  private val gridSize = squares * squareSize
-  private val middle = squares / 2
+  val squares = gameWorld.BoardSize
+  val gridSize = squares * squareSize
+  val middle = squares / 2
   
   /*
    * All the sprites for the game are loaded
