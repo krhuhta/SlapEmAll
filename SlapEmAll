@@ -7,31 +7,32 @@ import Sounds._
 
 object SlapEmAll extends PApplet {
   
-  val squareSize = 100
-  val gameWorld = new World
-  val player = new Player(gameWorld)
-  val levels = new Levels
+  private val squareSize = 100
+  private val gameWorld = new World
+  private val player = new Player(gameWorld)
+  private val levels = new Levels
   
   private var stage = 0               //Stage 0 is the menu
-  private var endScreen = false       //Are we currently at the endScreen?
+  private var endScreen = false       //Tells whether the endScreen has been drawn once or not (used when the game ends)
   
-  val squares = gameWorld.BoardSize
-  val gridSize = squares * squareSize
-  val middle = squares / 2
+  private val squares = gameWorld.BoardSize
+  private val gridSize = squares * squareSize
+  private val middle = squares / 2
   
   /*
    * All the sprites for the game are loaded
    */
-  val mPic = loadImage("mermaidPic_burned.png")
-  val pPic = loadImage("piraattiPicture_burned.png")
-  val dPic = loadImage("dockPicture.png")
-  val sPic = loadImage("seaPicture.png")
-  val startPic = loadImage("startscreen.jpg")
-  val mAttackLeft = loadImage("mermaidPic_left.png")
-  val mAttackUp = loadImage("mermaidPic_up.png")
-  val mAttackRight = loadImage("mermaidPic_right.png")
-  val mAttackDown = loadImage("mermaidPic_down.png")
-  val cannedMermaidPic = loadImage("endingPic.png")
+  private val mPic = loadImage("mermaidPic_burned.png")
+  private val pPic = loadImage("piraattiPicture_burned.png")
+  private val dPic = loadImage("dockPicture.png")
+  private val sPic = loadImage("seaPicture.png")
+  private val startPic = loadImage("startscreen.jpg")
+  private val mAttackLeft = loadImage("mermaidPic_left.png")
+  private val mAttackUp = loadImage("mermaidPic_up.png")
+  private val mAttackRight = loadImage("mermaidPic_right.png")
+  private val mAttackDown = loadImage("mermaidPic_down.png")
+  private val cannedMermaidPic = loadImage("endingPic.png")
+  private val winningScreen = loadImage("winningscreen.png")
   
   override def setup() : Unit = {
     size(gridSize, gridSize)
@@ -39,7 +40,9 @@ object SlapEmAll extends PApplet {
     
   }
 
-  
+  /*
+   * Checks in which stage the game is currently and draws the window accordingly.
+   */
   override def draw() : Unit = {
     if (!gameWorld.hasLost && !gameWorld.hasWon) {
       stage match {
@@ -63,8 +66,8 @@ object SlapEmAll extends PApplet {
       }
 
       player.timeFromLastHit -= 1
-    } else {
-        if (!endScreen) {
+    } else { //if the game has ended
+        if (!endScreen) { // checks whether an endScreen (winning or losing) has been drawn
           if(gameWorld.hasLost) drawEnd else drawWin
           pirate.stop()
           pirate.setFramePosition(0)
@@ -74,7 +77,7 @@ object SlapEmAll extends PApplet {
           speedUpPirate.setFramePosition(0)
           if(gameWorld.hasWon) winPlayer() else losePlayer()
         }
-        endScreen = true
+        endScreen = true // when the endscreen has already appeared, moves to apply the checkIfRestartButton-method
         this.checkIfRestartButton
     }
   }
@@ -155,6 +158,10 @@ object SlapEmAll extends PApplet {
       }
   }
   
+  /*
+   * Is used to draw the restart-button in the right place but with different
+   * levels of opacity.
+   */
   private def drawRestart(seeThroughness: Int) = {
     val font = createFont("Arial Black", 100, true)
     stroke(0, 0, 0)
@@ -176,9 +183,17 @@ object SlapEmAll extends PApplet {
   }
   /*
    * Draws the restart button, the achieced score and the victory screen.
-   */ //TODO toteuta tämä metodi, muuten toimii
+   */ 
   private def drawWin = {
-    ???
+    val font = createFont("Arial Black", 100, true)
+    image(winningScreen, 0, 0)
+    fill(225, 227, 232)
+    textFont(font, 40)
+    text("Congratulations, you managed to escape the evil pirates!", 100, 80, 600, 800)
+    textFont(font, 30)
+    fill(255, 255, 255)
+    text("Swim free, little one!", 400, 300, 700, 500)
+    drawRestart(191)
   }
   /* Checks if the cursor is over a level button. 
    * Changes the color of the button if it is.
@@ -221,7 +236,7 @@ object SlapEmAll extends PApplet {
       drawRestart(255)
     } else {
       drawBoard
-      drawEnd
+      if (this.gameWorld.hasLost) drawEnd else drawWin
     }
   }
   
@@ -247,7 +262,7 @@ object SlapEmAll extends PApplet {
     /* Reacts to the clicking of the restart button
      * 
      */
-    } else if (gameWorld.hasLost) {
+    } else if (gameWorld.hasLost || gameWorld.hasWon) {
       if (360 < mouseX && mouseX < 540 && 
           800 < mouseY && mouseY < 880) {
         stage = 0 
@@ -256,9 +271,12 @@ object SlapEmAll extends PApplet {
         frameRate(30)
         endScreen = false
       }
-    }
-    
+    } 
   }
+  
+  /* 
+   * Define everything that happens when the player attempts to hit an enemy.
+   */
   private def hitNorth() = { 
     if(player.timeFromLastHit < 0 && stage != 0) {
       player.hit(0)
@@ -291,6 +309,12 @@ object SlapEmAll extends PApplet {
       player.timeFromLastHit = 8
     }
   }
+  
+  /*
+   * Goes through the different commands that the player can give
+   * by keyboard.
+   */
+  
   override def keyPressed() : Unit = {
     val e = keyCode
       e match {
@@ -336,8 +360,10 @@ object SlapEmAll extends PApplet {
         case _  => None
       }
   }
-
-    
+  
+  /*
+   * Defines the basics of the screen where the game appears.
+   */
   def main(args: Array[String]) {
     val frame = new javax.swing.JFrame("Slap 'em All!")
     
