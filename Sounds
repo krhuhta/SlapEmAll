@@ -1,5 +1,3 @@
-
-
 object Sounds {
   
   import processing.core._
@@ -10,9 +8,12 @@ object Sounds {
 
   //Sounds of the game  
   
-  var muted = false
+  /*
+   * Variable which tells if music has been muted
+   */
+  var musicMuted = false
   
-    /*
+  /*
    * level 1 music
    */
   private val pirateFile = new File("pirate.wav")
@@ -27,7 +28,8 @@ object Sounds {
   private val bitPirateIn = AudioSystem.getAudioInputStream(bitPirateFile)
   val bitPirate = AudioSystem.getClip()
   bitPirate.open(bitPirateIn)
-   /*
+  
+  /*
    * level 3 music
    */
   private val speedUpPirateFile = new File("SpeedUpPirates.wav")
@@ -36,27 +38,40 @@ object Sounds {
   speedUpPirate.open(speedUpPirateIn)
   
     
+  
+  //Soundeffects
+  
   /*
-   * Soundeffects
+   * Variable which tells if music has been muted
    */
-  var slapMuted = false
+  var effectsMuted = false
+  
+  /*
+   * Hit voice
+   */
   private val slapFile = new File("slap.wav")
   private val slapIn = AudioSystem.getAudioInputStream(slapFile)
   val slap = AudioSystem.getClip()
   slap.open(slapIn)
   
+  /*
+   * Winning voice
+   */
   private val winFile = new File("winning.wav")
   private val winIn = AudioSystem.getAudioInputStream(winFile)
   val winning = AudioSystem.getClip()
   winning.open(winIn)
   
+  /*
+   * Losing voice
+   */
   private val loseFile = new File("losing.wav")
   private val loseIn = AudioSystem.getAudioInputStream(loseFile)
   val losing = AudioSystem.getClip()
   losing.open(loseIn)
   
-   /*
-   * Muting sounds
+  /*
+   * Mutingcontrols of sounds
    */
   val pirateControl       : BooleanControl = pirate.       getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
   val slapControl         : BooleanControl = slap.         getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
@@ -65,37 +80,56 @@ object Sounds {
   val winningControl: BooleanControl = winning.getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
   val losingControl: BooleanControl = losing.getControl(BooleanControl.Type.MUTE).asInstanceOf[BooleanControl]
 
-     
-  /** Plays background sounds
-  */
+  //Plays background sounds 
+  
+  /*
+   * Loops pirate song continusly (level 1)
+   */
   def soundPlayer1() = {
     Sounds.pirate.loop(Clip.LOOP_CONTINUOUSLY) 
   }
+  
+  /*
+   * Plays song one time (level 2)
+   */
   def soundPlayer2() = {
     bitPirate.setFramePosition(0)
     bitPirate.start()
   }
+  
+  /*
+   * Plays song one time (level 3)
+   */
   def soundPlayer3() = {
     speedUpPirate.setFramePosition(0)
     speedUpPirate.start() 
   }
     
 
-    /**Plays soundeffects
-  */
+  // Plays soundeffects
+  
+  /*
+   * Sets slap sound to start and plays it
+   */
   def slapPlayer() = {
     slap.setFramePosition(0)
     slap.start()
   }
   
+  /*
+   * Sets winning sound to start and plays it
+   */
   def winPlayer() = {
     winning.setFramePosition(0)
     winning.start()
   }
   
+  /*
+   * Sets losing sound to start and plays it
+   */
   def losePlayer() = {
     losing.setFramePosition(0)
     losing.start()
   }
-   
+
 }
