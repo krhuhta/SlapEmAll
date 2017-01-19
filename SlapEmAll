@@ -253,14 +253,14 @@ object SlapEmAll extends PApplet {
         stage = 0 
         loop()
         gameWorld.boot()
-        frameRate(60)
+        frameRate(30)
         endScreen = false
       }
     }
     
   }
   private def hitNorth() = { 
-    if(player.timeFromLastHit < 0) {
+    if(player.timeFromLastHit < 0 && stage != 0) {
       player.hit(0)
       image(mAttackUp, middle * squareSize, middle * squareSize)
       slapPlayer()
@@ -268,7 +268,7 @@ object SlapEmAll extends PApplet {
     }
   }
   private def hitEast() = {
-    if(player.timeFromLastHit < 0) {
+    if(player.timeFromLastHit < 0 && stage != 0) {
       player.hit(1)
       image(mAttackRight, middle * squareSize, middle * squareSize)
       slapPlayer()
@@ -276,7 +276,7 @@ object SlapEmAll extends PApplet {
       }
   }
   private def hitSouth() = {
-    if(player.timeFromLastHit < 0) {
+    if(player.timeFromLastHit < 0 && stage != 0) {
       player.hit(2)
       image(mAttackDown, middle * squareSize, middle * squareSize)
       slapPlayer()
@@ -284,7 +284,7 @@ object SlapEmAll extends PApplet {
     }
   }
   private def hitWest() = {
-    if(player.timeFromLastHit < 0) {
+    if(player.timeFromLastHit < 0 && stage != 0) {
       player.hit(3)
       image(mAttackLeft, middle * squareSize, middle * squareSize)
       slapPlayer()
