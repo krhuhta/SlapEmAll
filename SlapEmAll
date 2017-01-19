@@ -296,13 +296,13 @@ object SlapEmAll extends PApplet {
       e match {
         //Mutes the music when M is pressed 
         case 77 => {
-          if(!muted){
-            muted = true
+          if(!musicMuted){
+            musicMuted = true
             pirateControl.setValue(true)
             bitPirateControl.setValue(true)
             speedUpPirateControl.setValue(true)
           } else {
-            muted = false
+            musicMuted = false
             pirateControl.setValue(false)
             bitPirateControl.setValue(false)
             speedUpPirateControl.setValue(false)
@@ -310,13 +310,13 @@ object SlapEmAll extends PApplet {
         }
         //Mutes the soundeffects when N is pressed
         case 78 => {
-          if(!slapMuted){
-            slapMuted = true
+          if(!effectsMuted){
+            effectsMuted = true
             slapControl.setValue(true)
             losingControl.setValue(true)
             winningControl.setValue(true)
           } else {
-            slapMuted = false
+            effectsMuted = false
             slapControl.setValue(false)
             losingControl.setValue(false)
             winningControl.setValue(false)
