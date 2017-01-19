@@ -29,7 +29,7 @@ class Levels {
   }
   
 def stageThree() = {
-    speed = 12
+    speed = 24
     if(frameCount % speed == 0) {
       gameWorld.advanceEnemies()
       if (gameWorld.pointCount >= 0    && gameWorld.pointCount <= 580)  gameWorld.newEnemy()
