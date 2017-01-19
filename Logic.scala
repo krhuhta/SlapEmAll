@@ -85,7 +85,6 @@ class World {
 
 
 class Enemy {                  //Class for the Enemies, currently does nothing more than exits. Made to ease futher development.
-  def clear = false
 }
   
 class Player(world: World) {                 //The player
