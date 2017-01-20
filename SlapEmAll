@@ -12,8 +12,8 @@ object SlapEmAll extends PApplet {
   val player = new Player(gameWorld)
   val levels = new Levels
   
-  private var stage = 0               //Stage 0 is the menu
-  private var endScreen = false       //Tells whether the endScreen has been drawn once or not (used when the game ends)
+  private var stage = 0                                             //Stage 0 is the menu
+  private var endScreen = false                                     //Tells whether the endScreen has been drawn once or not (used when the game ends)
   
   val squares = gameWorld.BoardSize
   val gridSize = squares * squareSize
@@ -66,8 +66,8 @@ object SlapEmAll extends PApplet {
       }
 
       player.timeFromLastHit -= 1
-    } else { //if the game has ended
-        if (!endScreen) { // checks whether an endScreen (winning or losing) has been drawn
+    } else {                                                          //if the game has ended
+        if (!endScreen) {                                             // checks whether an endScreen (winning or losing) has been drawn
           if(gameWorld.hasLost) drawEnd else drawWin
           pirate.stop()
           pirate.setFramePosition(0)
@@ -77,7 +77,7 @@ object SlapEmAll extends PApplet {
           speedUpPirate.setFramePosition(0)
           if(gameWorld.hasWon) winPlayer() else losePlayer()
         }
-        endScreen = true // when the endscreen has already appeared, moves to apply the checkIfRestartButton-method
+        endScreen = true                                              // when the endscreen has already appeared, moves to apply the checkIfRestartButton-method
         this.checkIfRestartButton
     }
   }
@@ -318,8 +318,7 @@ object SlapEmAll extends PApplet {
   override def keyPressed() : Unit = {
     val e = keyCode
       e match {
-        //Mutes the music when M is pressed 
-        case 77 => {
+        case 77 => {                                   //Mutes the music when M is pressed 
           if(!musicMuted){
             musicMuted = true
             pirateControl.setValue(true)
@@ -332,8 +331,7 @@ object SlapEmAll extends PApplet {
             speedUpPirateControl.setValue(false)
           }
         }
-        //Mutes the soundeffects when N is pressed
-        case 78 => {
+        case 78 => {                                   //Mutes the soundeffects when N is pressed
           if(!effectsMuted){
             effectsMuted = true
             slapControl.setValue(true)
