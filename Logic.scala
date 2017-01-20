@@ -2,10 +2,10 @@
 class World {
   import scala.util.Random.shuffle
   
-  val directions = Vector(0, 1, 2, 3)                                                //North, East, South, West)
+  val directions = Vector(0, 1, 2, 3)                                  //North, East, South, West)
   val lineLength = 4
   val BoardSize = lineLength * 2 + 1
-  var enemies: Array[Array[Option[Enemy]]] = Array.fill(BoardSize, BoardSize)(None)  //Initial state has no enemies
+  var enemies: Array[Array[Int]] = Array.fill(BoardSize, BoardSize)(0) //Initial state has no enemies. 0 is an empty square and 1 is an enemy.
   /*
    * Methods for keeping track whether the game has been lost or not.
    */
@@ -30,7 +30,7 @@ class World {
    */
   def boot() = {
     points = 0
-    enemies = Array.fill(BoardSize, BoardSize)(None)
+    enemies = Array.fill(BoardSize, BoardSize)(0)
     unLose()
     unWin()
   }
@@ -40,10 +40,10 @@ class World {
   def newEnemy() = {
     val rand = shuffle(directions).head
     rand match {
-      case 0 => enemies         (lineLength)(0)     = Some(new Enemy) // North
-      case 1 => enemies(lineLength * 2)(lineLength) = Some(new Enemy) // East
-      case 2 => enemies(lineLength)(lineLength * 2) = Some(new Enemy) // South
-      case 3 => enemies (0) (lineLength)            = Some(new Enemy) // West
+      case 0 => enemies         (lineLength)(0)     = 1 // North
+      case 1 => enemies(lineLength * 2)(lineLength) = 1 // East
+      case 2 => enemies(lineLength)(lineLength * 2) = 1 // South
+      case 3 => enemies (0) (lineLength)            = 1 // West
       case _ => None
     }
   }
@@ -53,35 +53,36 @@ class World {
    */
   def advanceEnemies() = {                                                     
       for (j <- lineLength - 1 to 0 by -1) {                    //North
-        if (enemies(lineLength)(j).isDefined) {
+        if (enemies(lineLength)(j) == 1) {
           enemies(lineLength)(j + 1) = enemies(lineLength)(j)
-          enemies(lineLength)(j) = None 
+          enemies(lineLength)(j) = 0 
         }
       }
       for (i <- lineLength + 1 to lineLength * 2) {             //East
-        if (enemies(i)(lineLength).isDefined) {     
+        if (enemies(i)(lineLength) == 1) {     
           enemies(i - 1)(lineLength) = enemies(i)(lineLength)
-          enemies(i)(lineLength) = None 
+          enemies(i)(lineLength) = 0 
         }
       }
       for (j <- lineLength + 1 to lineLength * 2) {             //South
-        if (enemies(lineLength)(j).isDefined) {           
+        if (enemies(lineLength)(j) == 1) {           
           enemies(lineLength)(j - 1) = enemies(lineLength)(j)
-          enemies(lineLength)(j) = None 
+          enemies(lineLength)(j) = 0 
         }
       }
       for (i <- lineLength - 1 to 0 by -1) {                    //West
-        if (enemies(i)(lineLength).isDefined) {           
+        if (enemies(i)(lineLength) == 1) {           
           enemies(i + 1)(lineLength) = enemies(i)(lineLength)
-          enemies(i)(lineLength) = None 
+          enemies(i)(lineLength) = 0 
         }
       }
   }
   /*
    * Method that checks if the player has lost the game
+   * Checks if an enemy is on top of the player (and loses the game if true)
    */
   def checkIfLost() = {
-    if (enemies(lineLength)(lineLength).isDefined) lose()//Checks if an enemy is on top of the player (and loses the game if true)
+    if (enemies(lineLength)(lineLength) == 1) lose()
   }
   /*
    * Adds 10 points to the score
@@ -101,33 +102,30 @@ class World {
 
 }
 
-
-
-class Enemy {                  //Class for the Enemies, currently does nothing more than exits. Made to ease futher development.
-  
-}
-
 class Player(world: World) {                                         //The player
   
-  var dirOfLastHit = -1                                              //Direction where the player should face a for a few frames after each hit.
+  var dirOfLastHit = -1                                              //Direction where the player will face a for a few frames after each hit.
   var timeFromLastHit = 0                                            //How many frames will the player still face in a given direction.
-  
-  def hit(dir: Int) = {                                              // Hits in the direction of param dir. Kills whatever there is.
+  /*
+   * Hits in the direction of param dir. Kills whatever there is.7
+   * When this method is called, it is assumed that it is an approriate time to be called.
+   */
+  def hit(dir: Int) = {                                         
     dir match {
       case 0 => {
-        world.enemies(world.lineLength)(world.lineLength - 1) = None // North
+        world.enemies(world.lineLength)(world.lineLength - 1) = 0   // North
         dirOfLastHit = dir
       }
       case 1 => {
-        world.enemies(world.lineLength + 1)(world.lineLength) = None // East
+        world.enemies(world.lineLength + 1)(world.lineLength) = 0   // East
         dirOfLastHit = dir
       }
       case 2 => {
-        world.enemies(world.lineLength)(world.lineLength + 1) = None // South
+        world.enemies(world.lineLength)(world.lineLength + 1) = 0   // South
         dirOfLastHit = dir
       }
       case 3 => {
-        world.enemies(world.lineLength - 1)(world.lineLength) = None // West
+        world.enemies(world.lineLength - 1)(world.lineLength) = 0   // West
         dirOfLastHit = dir
       }
       case _ => None
